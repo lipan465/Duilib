@@ -1,0 +1,78 @@
+﻿  stdafx.cpp
+  XUnzip.cpp
+d:\vc\multidui\duilib\utils\xunzip.cpp(97): warning C4005: “STRICT”: 宏重定义
+          c:\program files (x86)\microsoft sdks\windows\v7.0a\include\windef.h(16) : 参见“STRICT”的前一个定义
+  WinImplBase.cpp
+  Utils.cpp
+  UIShadow.cpp
+  UIDelegate.cpp
+  TrayIcon.cpp
+  DragDropImpl.cpp
+d:\vc\multidui\duilib\utils\dragdropimpl.cpp(28): warning C4018: “<”: 有符号/无符号不匹配
+d:\vc\multidui\duilib\utils\dragdropimpl.cpp(33): warning C4018: “<”: 有符号/无符号不匹配
+d:\vc\multidui\duilib\utils\dragdropimpl.cpp(79): warning C4018: “<”: 有符号/无符号不匹配
+d:\vc\multidui\duilib\utils\dragdropimpl.cpp(112): warning C4018: “<”: 有符号/无符号不匹配
+d:\vc\multidui\duilib\utils\dragdropimpl.cpp(327): warning C4018: “<”: 有符号/无符号不匹配
+d:\vc\multidui\duilib\utils\dragdropimpl.cpp(334): warning C4018: “<”: 有符号/无符号不匹配
+d:\vc\multidui\duilib\utils\dragdropimpl.cpp(378): warning C4018: “>=”: 有符号/无符号不匹配
+d:\vc\multidui\duilib\utils\dragdropimpl.cpp(384): warning C4018: “<”: 有符号/无符号不匹配
+d:\vc\multidui\duilib\utils\dragdropimpl.cpp(398): warning C4018: “>=”: 有符号/无符号不匹配
+d:\vc\multidui\duilib\utils\dragdropimpl.cpp(533): warning C4018: “<”: 有符号/无符号不匹配
+  DPI.cpp
+  UILib.cpp
+  UIVerticalLayout.cpp
+  UITileLayout.cpp
+  UITabLayout.cpp
+  UIHorizontalSplitterWnd.cpp
+  UIHorizontalLayout.cpp
+  UIChildLayout.cpp
+  UIAnimationTabLayout.cpp
+d:\vc\multidui\duilib\layout\uianimationtablayout.cpp(8): warning C4355: “this”: 用于基成员初始值设定项列表
+  UIResourceManager.cpp
+  UIRender.cpp
+  UIMarkup.cpp
+  UIManager.cpp
+  正在生成代码...
+  正在编译...
+  UIDlgBuilder.cpp
+  UIControl.cpp
+  UIContainer.cpp
+  UIBase.cpp
+  ControlFactory.cpp
+  UIWebBrowser.cpp
+  UITreeView.cpp
+  UIText.cpp
+d:\vc\multidui\duilib\control\uitext.cpp(130): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+  UISlider.cpp
+  UIScrollBar.cpp
+  UIRollText.cpp
+  UIRichEdit.cpp
+  UIProgress.cpp
+  UIOption.cpp
+  UIMenu.cpp
+  UIListEx.cpp
+d:\vc\multidui\duilib\control\uilistex.cpp(411): warning C4800: “BOOL”: 将值强制为布尔值“true”或“false”(性能警告)
+  UIList.cpp
+  UILabel.cpp
+  UIIPAddress.cpp
+  UIHotKey.cpp
+  正在生成代码...
+  正在编译...
+  UIGroupBox.cpp
+  UIGifAnimEx.cpp
+  UIGifAnim.cpp
+  UIFlash.cpp
+  UIFadeButton.cpp
+d:\vc\multidui\duilib\control\uifadebutton.cpp(7): warning C4355: “this”: 用于基成员初始值设定项列表
+  UIEdit.cpp
+  UIDateTime.cpp
+  UIComboBox.cpp
+  UICombo.cpp
+  UIColorPalette.cpp
+  UIButton.cpp
+  UIAnimation.cpp
+  UIActiveX.cpp
+  正在生成代码...
+     正在创建库 D:\VC\MultiDui\Debug\DuiLib.lib 和对象 D:\VC\MultiDui\Debug\DuiLib.exp
+     正在创建库 D:\VC\MultiDui\Debug\DuiLib.lib 和对象 D:\VC\MultiDui\Debug\DuiLib.exp
+  DuiLib.vcxproj -> D:\VC\MultiDui\Debug\DuiLib.dll

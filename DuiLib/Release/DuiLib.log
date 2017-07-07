@@ -1,0 +1,76 @@
+﻿  stdafx.cpp
+  UIActiveX.cpp
+  UIAnimation.cpp
+  UIButton.cpp
+  UIColorPalette.cpp
+  UICombo.cpp
+  UIComboBox.cpp
+  UIDateTime.cpp
+  UIEdit.cpp
+  UIFadeButton.cpp
+Control\UIFadeButton.cpp(7): warning C4355: “this”: 用于基成员初始值设定项列表
+  UIFlash.cpp
+  UIGifAnim.cpp
+  UIGifAnimEx.cpp
+  UIGroupBox.cpp
+  UIHotKey.cpp
+  UIIPAddress.cpp
+  UILabel.cpp
+  UIList.cpp
+  UIListEx.cpp
+Control\UIListEx.cpp(411): warning C4800: “BOOL”: 将值强制为布尔值“true”或“false”(性能警告)
+  UIMenu.cpp
+  UIOption.cpp
+  正在编译...
+  UIProgress.cpp
+  UIRichEdit.cpp
+  UIRollText.cpp
+  UIScrollBar.cpp
+  UISlider.cpp
+  UIText.cpp
+Control\UIText.cpp(130): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+  UITreeView.cpp
+  UIWebBrowser.cpp
+  ControlFactory.cpp
+  UIBase.cpp
+  UIContainer.cpp
+  UIControl.cpp
+  UIDlgBuilder.cpp
+  UIManager.cpp
+  UIMarkup.cpp
+  UIRender.cpp
+  UIResourceManager.cpp
+  UIAnimationTabLayout.cpp
+Layout\UIAnimationTabLayout.cpp(8): warning C4355: “this”: 用于基成员初始值设定项列表
+  UIChildLayout.cpp
+  UIHorizontalLayout.cpp
+  正在编译...
+  UIHorizontalSplitterWnd.cpp
+  UITabLayout.cpp
+  UITileLayout.cpp
+  UIVerticalLayout.cpp
+  UILib.cpp
+  DPI.cpp
+  DragDropImpl.cpp
+Utils\DragDropImpl.cpp(28): warning C4018: “<”: 有符号/无符号不匹配
+Utils\DragDropImpl.cpp(33): warning C4018: “<”: 有符号/无符号不匹配
+Utils\DragDropImpl.cpp(79): warning C4018: “<”: 有符号/无符号不匹配
+Utils\DragDropImpl.cpp(112): warning C4018: “<”: 有符号/无符号不匹配
+Utils\DragDropImpl.cpp(327): warning C4018: “<”: 有符号/无符号不匹配
+Utils\DragDropImpl.cpp(334): warning C4018: “<”: 有符号/无符号不匹配
+Utils\DragDropImpl.cpp(378): warning C4018: “>=”: 有符号/无符号不匹配
+Utils\DragDropImpl.cpp(384): warning C4018: “<”: 有符号/无符号不匹配
+Utils\DragDropImpl.cpp(398): warning C4018: “>=”: 有符号/无符号不匹配
+Utils\DragDropImpl.cpp(533): warning C4018: “<”: 有符号/无符号不匹配
+  TrayIcon.cpp
+  UIDelegate.cpp
+  UIShadow.cpp
+  Utils.cpp
+  WinImplBase.cpp
+  XUnzip.cpp
+Utils\XUnzip.cpp(97): warning C4005: “STRICT”: 宏重定义
+          C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\include\windef.h(16) : 参见“STRICT”的前一个定义
+     正在创建库 D:\VC\MultiDui\Release\DuiLib.lib 和对象 D:\VC\MultiDui\Release\DuiLib.exp
+  正在生成代码
+  已完成代码的生成
+  DuiLib.vcxproj -> D:\VC\MultiDui\Release\DuiLib.dll
