@@ -192,12 +192,32 @@ namespace DuiLib {
 			}
 		}
 
+		for (int i = 0; i < m_aSelItems.GetSize();) {
+			int iSelIndex = (int)m_aSelItems.GetAt(i);
+			if(iIndex == iSelIndex)
+			{
+				m_aSelItems.Remove(i);
+			}
+			else if(iIndex < iSelIndex)
+			{
+				m_aSelItems.SetAt(i,(LPVOID)(iSelIndex-1));
+				++i;
+			}
+			else
+			{
+				++i;
+			}		
+		}
+
 		if( iIndex == m_iCurSel && m_iCurSel >= 0 ) {
 			int iSel = m_iCurSel;
 			m_iCurSel = -1;
 			SelectItem(FindSelectable(iSel, false));
 		}
 		else if( iIndex < m_iCurSel ) m_iCurSel -= 1;
+
+		
+
 		return true;
 	}
 
@@ -209,6 +229,23 @@ namespace DuiLib {
 			CControlUI* p = m_pList->GetItemAt(i);
 			IListItemUI* pListItem = static_cast<IListItemUI*>(p->GetInterface(_T("ListItem")));
 			if( pListItem != NULL ) pListItem->SetIndex(i);
+		}
+
+		for (int i = 0; i < m_aSelItems.GetSize();) {
+			int iSelIndex = (int)m_aSelItems.GetAt(i);
+			if(iIndex == iSelIndex)
+			{
+				m_aSelItems.Remove(i);
+			}
+			else if(iIndex < iSelIndex)
+			{
+				m_aSelItems.SetAt(i,(LPVOID)(iSelIndex-1));
+				++i;
+			}
+			else
+			{
+				++i;
+			}		
 		}
 
 		if( iIndex == m_iCurSel && m_iCurSel >= 0 ) {
