@@ -61,6 +61,7 @@
 #include "UIlib.h"
 #include <olectl.h>
 #include "Resource.h"
+#include "Utils/unzip.h"
 extern HINSTANCE ghModule;
 
 #define lengthof(x) (sizeof(x)/sizeof(*x))

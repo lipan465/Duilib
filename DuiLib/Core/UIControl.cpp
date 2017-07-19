@@ -1153,22 +1153,40 @@ namespace DuiLib {
 		CDuiString sItem;
 		CDuiString sValue;
 		while( *pstrList != _T('\0') ) {
-			sItem.Empty();
-			sValue.Empty();
-			while( *pstrList != _T('\0') && *pstrList != _T('=') ) {
-				LPTSTR pstrTemp = ::CharNext(pstrList);
-				while( pstrList < pstrTemp) {
-					sItem += *pstrList++;
+			//sItem.Empty();
+			//sValue.Empty(); 
+			//while( *pstrList != _T('\0') && *pstrList != _T('=') ) {
+				//LPTSTR pstrTemp = ::CharNext(pstrList);
+				//while( pstrList < pstrTemp) {
+				//	sItem += *pstrList++;
+				//}
+			//}
+			for(LPCTSTR p=pstrList;*p != _T('\0');p++)
+			{
+				if(*p == _T('='))
+				{
+					sItem.Assign(pstrList,(p-pstrList));
+					pstrList = p;
+					break;
 				}
 			}
 			ASSERT( *pstrList == _T('=') );
 			if( *pstrList++ != _T('=') ) return this;
 			ASSERT( *pstrList == _T('\"') );
 			if( *pstrList++ != _T('\"') ) return this;
-			while( *pstrList != _T('\0') && *pstrList != _T('\"') ) {
-				LPTSTR pstrTemp = ::CharNext(pstrList);
-				while( pstrList < pstrTemp) {
-					sValue += *pstrList++;
+			//while( *pstrList != _T('\0') && *pstrList != _T('\"') ) {
+			//	LPTSTR pstrTemp = ::CharNext(pstrList);
+			//	while( pstrList < pstrTemp) {
+			//		sValue += *pstrList++;
+			//	}
+			//}
+			for(LPCTSTR p=pstrList;*p != _T('\0');p++)
+			{
+				if(*p == _T('\"'))
+				{
+					sValue.Assign(pstrList,(p-pstrList));
+					pstrList = p;
+					break;
 				}
 			}
 			ASSERT( *pstrList == _T('\"') );

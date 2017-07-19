@@ -354,96 +354,89 @@ namespace DuiLib
 	//
 	//
 
-	CDuiString::CDuiString() : m_pstr(m_szBuffer)
+	CDuiString::CDuiString()
 	{
-		m_szBuffer[0] = '\0';
+		m_pstr = _T("");
 	}
 
-	CDuiString::CDuiString(const TCHAR ch) : m_pstr(m_szBuffer)
+	CDuiString::CDuiString(const TCHAR ch)
 	{
-		m_szBuffer[0] = ch;
-		m_szBuffer[1] = '\0';
+		m_pstr = static_cast<LPTSTR>(malloc((2) * sizeof(TCHAR)));
+		m_pstr[0] = ch;
+		m_pstr[1] = '\0';
 	}
 
-	CDuiString::CDuiString(LPCTSTR lpsz, int nLen) : m_pstr(m_szBuffer)
+	CDuiString::CDuiString(LPCTSTR lpsz, int nLen)
 	{      
 		ASSERT(!::IsBadStringPtr(lpsz,-1) || lpsz==NULL);
-		m_szBuffer[0] = '\0';
+		m_pstr = _T("");
 		Assign(lpsz, nLen);
 	}
 
-	CDuiString::CDuiString(const CDuiString& src) : m_pstr(m_szBuffer)
+	CDuiString::CDuiString(const CDuiString& src)
 	{
-		m_szBuffer[0] = '\0';
+		m_pstr = _T("");
 		Assign(src.m_pstr);
 	}
 
 	CDuiString::~CDuiString()
 	{
-		if( m_pstr != m_szBuffer ) free(m_pstr);
+		if( m_pstr[0] != 0 ) free(m_pstr);
 	}
 
 	int CDuiString::GetLength() const
-	{ 
+	{
 		return (int) _tcslen(m_pstr); 
 	}
 
 	CDuiString::operator LPCTSTR() const 
-	{ 
+	{
 		return m_pstr; 
 	}
 
 	void CDuiString::Append(LPCTSTR pstr)
 	{
+		if( pstr == NULL || pstr[0] == 0) return;
 		int nNewLength = GetLength() + (int) _tcslen(pstr);
-		if( nNewLength >= MAX_LOCAL_STRING_LEN ) {
-			if( m_pstr == m_szBuffer ) {
-				m_pstr = static_cast<LPTSTR>(malloc((nNewLength + 1) * sizeof(TCHAR)));
-				_tcscpy(m_pstr, m_szBuffer);
-				_tcscat(m_pstr, pstr);
-			}
-			else {
-				m_pstr = static_cast<LPTSTR>(realloc(m_pstr, (nNewLength + 1) * sizeof(TCHAR)));
-				_tcscat(m_pstr, pstr);
-			}
+		if(m_pstr[0] != 0)
+		{
+			LPTSTR tmp = static_cast<LPTSTR>(malloc((nNewLength + 1) * sizeof(TCHAR)));
+			_tcscpy(tmp, m_pstr);
+			free(m_pstr);
+			m_pstr = tmp;
 		}
-		else {
-			if( m_pstr != m_szBuffer ) {
-				free(m_pstr);
-				m_pstr = m_szBuffer;
-			}
-			_tcscat(m_szBuffer, pstr);
+		else
+		{
+			m_pstr = static_cast<LPTSTR>(malloc((nNewLength + 1) * sizeof(TCHAR)));
+			m_pstr[0] = 0;
 		}
+		_tcscat(m_pstr, pstr);
 	}
 
 	void CDuiString::Assign(LPCTSTR pstr, int cchMax)
 	{
-		if( pstr == NULL ) pstr = _T("");
+		if( m_pstr[0] != 0 ) free(m_pstr);
+		if( pstr == NULL || pstr[0] == 0)
+		{
+			m_pstr = _T("");
+			return;
+		}
+		
 		cchMax = (cchMax < 0 ? (int) _tcslen(pstr) : cchMax);
-		if( cchMax < MAX_LOCAL_STRING_LEN ) {
-			if( m_pstr != m_szBuffer ) {
-				free(m_pstr);
-				m_pstr = m_szBuffer;
-			}
-		}
-		else if( cchMax > GetLength() || m_pstr == m_szBuffer ) {
-			if( m_pstr == m_szBuffer ) m_pstr = NULL;
-			m_pstr = static_cast<LPTSTR>(realloc(m_pstr, (cchMax + 1) * sizeof(TCHAR)));
-		}
+		m_pstr = static_cast<LPTSTR>(malloc((cchMax + 1) * sizeof(TCHAR)));
 		_tcsncpy(m_pstr, pstr, cchMax);
 		m_pstr[cchMax] = '\0';
 	}
 
 	bool CDuiString::IsEmpty() const 
 	{ 
-		return m_pstr[0] == '\0'; 
+		return m_pstr[0] == '\0';
 	}
 
 	void CDuiString::Empty() 
 	{ 
-		if( m_pstr != m_szBuffer ) free(m_pstr);
-		m_pstr = m_szBuffer;
-		m_szBuffer[0] = '\0'; 
+		if( m_pstr[0] != 0 ) free(m_pstr);
+		m_pstr = _T(""); 
 	}
 
 	LPCTSTR CDuiString::GetData() const
@@ -553,8 +546,9 @@ namespace DuiLib
 	const CDuiString& CDuiString::operator=(const TCHAR ch)
 	{
 		Empty();
-		m_szBuffer[0] = ch;
-		m_szBuffer[1] = '\0';
+		m_pstr = static_cast<LPTSTR>(malloc((2) * sizeof(TCHAR)));
+		m_pstr[0] = ch;
+		m_pstr[1] = '\0';
 		return *this;
 	}
 
@@ -616,12 +610,14 @@ namespace DuiLib
 	}
 
 	int CDuiString::Compare(LPCTSTR lpsz) const 
-	{ 
+	{
+		if(m_pstr==NULL) return -1;
 		return _tcscmp(m_pstr, lpsz); 
 	}
 
 	int CDuiString::CompareNoCase(LPCTSTR lpsz) const 
-	{ 
+	{
+		if(m_pstr==NULL) return -1;
 		return _tcsicmp(m_pstr, lpsz); 
 	}
 

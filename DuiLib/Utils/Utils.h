@@ -133,7 +133,7 @@ namespace DuiLib
 	class UILIB_API CDuiString
 	{
 	public:
-		enum { MAX_LOCAL_STRING_LEN = 63 };
+		//enum { MAX_LOCAL_STRING_LEN = 63 };
 
 		CDuiString();
 		CDuiString(const TCHAR ch);
@@ -199,7 +199,8 @@ namespace DuiLib
 
 	protected:
 		LPTSTR m_pstr;
-		TCHAR m_szBuffer[MAX_LOCAL_STRING_LEN + 1];
+		//unsigned int m_buf_len;
+		//TCHAR m_szBuffer[MAX_LOCAL_STRING_LEN + 1];
 	};
 
 	static std::vector<CDuiString> StrSplit(CDuiString text, CDuiString sp)
