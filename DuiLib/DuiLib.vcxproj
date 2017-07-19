@@ -140,6 +140,7 @@
     <ClInclude Include="Utils\TrayIcon.h" />
     <ClInclude Include="Utils\UIDelegate.h" />
     <ClInclude Include="Utils\UIShadow.h" />
+    <ClInclude Include="Utils\unzip.h" />
     <ClInclude Include="Utils\Utils.h" />
     <ClInclude Include="Utils\VersionHelpers.h" />
     <ClInclude Include="Utils\WebBrowserEventHandler.h" />
@@ -200,9 +201,9 @@
     <ClCompile Include="Utils\TrayIcon.cpp" />
     <ClCompile Include="Utils\UIDelegate.cpp" />
     <ClCompile Include="Utils\UIShadow.cpp" />
+    <ClCompile Include="Utils\unzip.cpp" />
     <ClCompile Include="Utils\Utils.cpp" />
     <ClCompile Include="Utils\WinImplBase.cpp" />
-    <ClCompile Include="Utils\XUnzip.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DuiLib.rc" />

@@ -222,6 +222,9 @@
     <ClInclude Include="Layout\UIHorizontalSplitterWnd.h">
       <Filter>Layout</Filter>
     </ClInclude>
+    <ClInclude Include="Utils\unzip.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -377,14 +380,14 @@
     <ClCompile Include="Utils\WinImplBase.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="Utils\XUnzip.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
     <ClCompile Include="UILib.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Layout\UIHorizontalSplitterWnd.cpp">
       <Filter>Layout</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\unzip.cpp">
+      <Filter>Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
