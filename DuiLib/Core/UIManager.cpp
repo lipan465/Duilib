@@ -2880,7 +2880,7 @@ namespace DuiLib {
 		if( bitmap == NULL || bitmap[0] == _T('\0') ) return NULL;
 
 		TImageInfo* data = NULL;
-		if( type != NULL ) {
+		if( type != NULL && lstrlen(type) > 0) {
 			if( isdigit(*bitmap) ) {
 				LPTSTR pstr = NULL;
 				int iIndex = _tcstol(bitmap, &pstr, 10);
@@ -3711,11 +3711,15 @@ namespace DuiLib {
 
 	bool CPaintManagerUI::InitDragDrop()
 	{
-		//AddRef();
+		AddRef();
+
 		if(FAILED(RegisterDragDrop(m_hWndPaint, this))) //calls addref
 		{
+			DWORD dwError = GetLastError();
 			return false;
 		}
+		else Release(); //i decided to AddRef explicitly after new
+
 		FORMATETC ftetc={0};
 		ftetc.cfFormat = CF_BITMAP;
 		ftetc.dwAspect = DVASPECT_CONTENT;
