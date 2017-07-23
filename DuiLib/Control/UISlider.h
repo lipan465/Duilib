@@ -30,6 +30,7 @@ namespace DuiLib
 
 		void DoEvent(TEventUI& event);
 		void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
+		void PaintBkImage(HDC hDC);
 		void PaintForeImage(HDC hDC);
 
 		void SetValue(int nValue);

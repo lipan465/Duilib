@@ -466,8 +466,7 @@ namespace DuiLib {
 		long nTemp;
 		nTemp = --m_cRefCount;
 		ATLASSERT(nTemp >= 0);
-		if(nTemp==0)
-			delete this;
+		//if(nTemp==0) delete this;
 		return nTemp;
 	}
 

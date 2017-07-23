@@ -259,15 +259,64 @@ namespace DuiLib
 		else CProgressUI::SetAttribute(pstrName, pstrValue);
 	}
 
+	void CSliderUI::PaintBkImage(HDC hDC)
+	{
+		if( !m_sBkImage.IsEmpty() )
+		{
+			RECT rc = {0};
+			if( m_bHorizontal )
+			{
+				rc.left = m_szThumb.cx/2;
+				rc.right = m_rcItem.right - m_rcItem.left - m_szThumb.cx/2;
+				rc.bottom = m_rcItem.bottom - m_rcItem.top;
+			}
+			else
+			{
+				rc.top = m_szThumb.cy/2;
+				rc.right = m_rcItem.right - m_rcItem.left;
+				rc.bottom = m_rcItem.bottom - m_rcItem.top - m_szThumb.cy/2;
+			}
+			
+			m_sImageModify.Empty();
+			m_sImageModify.SmallFormat(_T("dest='%d,%d,%d,%d'"), rc.left, rc.top, rc.right, rc.bottom);
+			if( !DrawImage(hDC, (LPCTSTR)m_sBkImage,m_sImageModify) ) {}
+		}
+	}
+
 	void CSliderUI::PaintForeImage(HDC hDC)
 	{
-		CProgressUI::PaintForeImage(hDC);
-
+		//CProgressUI::PaintForeImage(hDC);
 		RECT rcThumb = GetThumbRect();
 		rcThumb.left -= m_rcItem.left;
 		rcThumb.top -= m_rcItem.top;
 		rcThumb.right -= m_rcItem.left;
 		rcThumb.bottom -= m_rcItem.top;
+
+		if( !m_sForeImage.IsEmpty() ) {
+
+			RECT rcFore = {0};
+			if( m_bHorizontal ) {
+				rcFore.left = m_szThumb.cx/2;
+				rcFore.right = rcThumb.right - m_szThumb.cx/2;
+				rcFore.bottom = m_rcItem.bottom - m_rcItem.top;
+			}
+			else {
+				rcFore.top = rcThumb.top + m_szThumb.cy/2;
+				rcFore.right = m_rcItem.right - m_rcItem.left;
+				rcFore.bottom = m_rcItem.bottom - m_rcItem.top - m_szThumb.cy/2;
+			}
+
+			m_sForeImageModify.Empty();
+			if (m_bStretchForeImage) {
+				m_sForeImageModify.SmallFormat(_T("dest='%d,%d,%d,%d'"), rcFore.left, rcFore.top, rcFore.right, rcFore.bottom);
+			}
+			else {
+				m_sForeImageModify.SmallFormat(_T("dest='%d,%d,%d,%d' source='%d,%d,%d,%d'"), rcFore.left, rcFore.top, rcFore.right, rcFore.bottom, rcFore.left, rcFore.top, rcFore.right, rcFore.bottom);
+			}
+
+			if( !DrawImage(hDC, (LPCTSTR)m_sForeImage, (LPCTSTR)m_sForeImageModify) ) {}
+		}
+
 		if( (m_uButtonState & UISTATE_CAPTURED) != 0 ) {
 			if( !m_sThumbPushedImage.IsEmpty() ) {
 				m_sImageModify.Empty();
