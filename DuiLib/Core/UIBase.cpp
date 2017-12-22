@@ -21,7 +21,7 @@ void UILIB_API DUI__Trace(LPCTSTR pstrFormat, ...)
     va_end(args);
     
 	CDuiString strMsg = szBuffer;
-    strMsg += _T("\n");
+    //strMsg += _T("\n");
     OutputDebugString(strMsg.GetData());
 
 #endif

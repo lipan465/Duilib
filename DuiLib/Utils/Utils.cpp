@@ -499,7 +499,7 @@ namespace DuiLib
 		{
 			ASSERT(!::IsBadStringPtrA(lpStr,-1));
 			int cchStr = (int) strlen(lpStr) + 1;
-			LPWSTR pwstr = (LPWSTR) _alloca(cchStr);
+			LPWSTR pwstr = (LPWSTR) _alloca(cchStr*sizeof(WCHAR));
 			if( pwstr != NULL ) ::MultiByteToWideChar(::GetACP(), 0, lpStr, -1, pwstr, cchStr) ;
 			Append(pwstr);
 		}
@@ -978,7 +978,7 @@ namespace DuiLib
 		::SetCursor(m_hOrigCursor);
 	}
 
-	char* w2a(wchar_t* lpszSrc)
+	char* w2a(const wchar_t* lpszSrc)
 	{
 		if (lpszSrc != NULL)
 		{
@@ -994,7 +994,7 @@ namespace DuiLib
 		return NULL;
 	}
 
-	wchar_t* a2w(char* lpszSrc)
+	wchar_t* a2w(const char* lpszSrc)
 	{
 		if (lpszSrc != NULL)
 		{

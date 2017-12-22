@@ -304,8 +304,8 @@ namespace DuiLib
 		}
 	};
 
-	char* w2a(wchar_t* lpszSrc);
-	wchar_t* a2w(char* lpszSrc);
+	UILIB_API char* w2a(const wchar_t* lpszSrc);
+	UILIB_API wchar_t* a2w(const char* lpszSrc);
 	///////////////////////////////////////////////////////////////////////////////////////
 	////
 	//struct TImageInfo;
