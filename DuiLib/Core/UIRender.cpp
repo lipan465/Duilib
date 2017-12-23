@@ -319,9 +319,8 @@ namespace DuiLib {
 					else
 					{
 #ifdef UNICODE
-						char* pwd = w2a((wchar_t*)sFilePwd.GetData());
+						const char* pwd = U2A((wchar_t*)sFilePwd.GetData());
 						hz = OpenZip(sFile.GetData(), pwd);
-						if(pwd) delete[] pwd;
 #else
 						hz = OpenZip(sFile.GetData(), sFilePwd.GetData());
 #endif
@@ -635,9 +634,8 @@ namespace DuiLib {
 				else {
 					CDuiString sFilePwd = CPaintManagerUI::GetResourceZipPwd();
 #ifdef UNICODE
-					char* pwd = w2a((wchar_t*)sFilePwd.GetData());
+					const char* pwd = U2A((wchar_t*)sFilePwd.GetData());
 					hz = OpenZip(sFile.GetData(), pwd);
-					if(pwd) delete[] pwd;
 #else
 					hz = OpenZip(sFile.GetData(), sFilePwd.GetData());
 #endif

@@ -461,12 +461,8 @@ namespace DuiLib {
 		if( m_bCachedResourceZip ) 
 		{
 #ifdef UNICODE
-			char* pwd = w2a((wchar_t*)password);
+			const char* pwd = U2A((wchar_t*)password);
 			m_hResourceZip = (HANDLE)OpenZip(pVoid, len, pwd);
-			if(pwd) {
-				delete[] pwd;
-				pwd = NULL;
-			}
 #else
 			m_hResourceZip = (HANDLE)OpenZip(pVoid, len, password);
 #endif
@@ -487,9 +483,8 @@ namespace DuiLib {
 			CDuiString sFile = CPaintManagerUI::GetResourcePath();
 			sFile += CPaintManagerUI::GetResourceZip();
 #ifdef UNICODE
-			char* pwd = w2a((wchar_t*)password);
+			const char* pwd = U2A((wchar_t*)password);
 			m_hResourceZip = (HANDLE)OpenZip(sFile.GetData(), pwd);
-			if(pwd) if(pwd) delete[] pwd;
 #else
 			m_hResourceZip = (HANDLE)OpenZip(sFile.GetData(), password);
 #endif
