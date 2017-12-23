@@ -978,8 +978,9 @@ namespace DuiLib
 		::SetCursor(m_hOrigCursor);
 	}
 
-	char* w2a(const wchar_t* lpszSrc)
+	std::string w2a(const wchar_t* lpszSrc)
 	{
+		std::string str;
 		if (lpszSrc != NULL)
 		{
 			int  nANSILen = WideCharToMultiByte(CP_ACP, 0, lpszSrc, -1, NULL, 0, NULL, NULL);
@@ -988,14 +989,16 @@ namespace DuiLib
 			{
 				ZeroMemory(pANSI, nANSILen + 1);
 				WideCharToMultiByte(CP_ACP, 0, lpszSrc, -1, pANSI, nANSILen, NULL, NULL);
-				return pANSI;
+				str = pANSI;
+				delete[] pANSI;
 			}
 		}	
-		return NULL;
+		return str;
 	}
 
-	wchar_t* a2w(const char* lpszSrc)
+	std::wstring a2w(const char* lpszSrc)
 	{
+		std::wstring str;
 		if (lpszSrc != NULL)
 		{
 			int nUnicodeLen = MultiByteToWideChar(CP_ACP, 0, lpszSrc, -1, NULL, 0);
@@ -1004,10 +1007,11 @@ namespace DuiLib
 			{
 				ZeroMemory((void*)pUnicode, (nUnicodeLen + 1) * sizeof(WCHAR));
 				MultiByteToWideChar(CP_ACP, 0, lpszSrc,-1, pUnicode, nUnicodeLen);
-				return pUnicode;
+				str = pUnicode;
+				delete[] pUnicode;
 			}
 		}
-		return NULL;
+		return str;
 	}
 	/////////////////////////////////////////////////////////////////////////////////////
 	//

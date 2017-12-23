@@ -303,9 +303,10 @@ namespace DuiLib
 			VariantClear(this); 
 		}
 	};
-
-	UILIB_API char* w2a(const wchar_t* lpszSrc);
-	UILIB_API wchar_t* a2w(const char* lpszSrc);
+	#define U2A(s) (w2a(s).c_str())
+	#define A2U(s) (a2w(s).c_str())
+	UILIB_API std::string w2a(const wchar_t* lpszSrc);
+	UILIB_API std::wstring a2w(const char* lpszSrc);
 	///////////////////////////////////////////////////////////////////////////////////////
 	////
 	//struct TImageInfo;
