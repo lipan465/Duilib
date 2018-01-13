@@ -34,6 +34,9 @@
     <None Include="Utils\flash11.tlh">
       <Filter>Utils</Filter>
     </None>
+    <None Include="..\..\MyMusicPlayer\Debug\DuiLib.dll">
+      <Filter>Control</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">

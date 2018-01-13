@@ -426,14 +426,17 @@ namespace DuiLib {
 	//////////////////////////////////////////////////////////////////////
 	// CIDropTarget Class
 	//////////////////////////////////////////////////////////////////////
-	CIDropTarget::CIDropTarget(HWND hTargetWnd): 
-	m_hTargetWnd(hTargetWnd),
-		m_cRefCount(0), m_bAllowDrop(false),
-		m_pDropTargetHelper(NULL), m_pSupportedFrmt(NULL)
+	CIDropTarget::CIDropTarget(): 
+		m_hTargetWnd(NULL),
+		m_lRefCount(0), 
+		//m_bAllowDrop(false),
+		m_pDropTargetHelper(NULL),
+		m_pDuiDropTarget(NULL)
 	{
 		if(FAILED(CoCreateInstance(CLSID_DragDropHelper,NULL,CLSCTX_INPROC_SERVER,
 			IID_IDropTargetHelper,(LPVOID*)&m_pDropTargetHelper)))
 			m_pDropTargetHelper = NULL;
+		AddRef();
 	}
 
 	CIDropTarget::~CIDropTarget()
@@ -445,72 +448,107 @@ namespace DuiLib {
 		}
 	}
 
+	bool CIDropTarget::DragDropRegister(IDuiDropTarget* pDuiDropTarget,HWND hWnd)
+	{
+		if(!IsWindow(hWnd))return false;
+		m_pDuiDropTarget = pDuiDropTarget;
+
+		HRESULT s = ::RegisterDragDrop (hWnd,this);
+		m_hTargetWnd = hWnd;
+		if(SUCCEEDED(s))
+		{
+			return true;
+		}
+		else 
+		{ 
+			return false; 
+		}
+	}
+
+	bool CIDropTarget::DragDropRevoke()
+	{
+		HRESULT s = ::RevokeDragDrop(m_hTargetWnd);
+		return SUCCEEDED(s);
+	}
+
 	HRESULT STDMETHODCALLTYPE CIDropTarget::QueryInterface( /* [in] */ REFIID riid,
 		/* [iid_is][out] */ void __RPC_FAR *__RPC_FAR *ppvObject)
 	{
-		*ppvObject = NULL;
-		if (IID_IUnknown==riid || IID_IDropTarget==riid)
-			*ppvObject=this;
+		//*ppvObject = NULL;
+		//if (IID_IUnknown==riid || IID_IDropTarget==riid)
+		//	*ppvObject=this;
 
-		if (*ppvObject != NULL)
+		//if (*ppvObject != NULL)
+		//{
+		//	((LPUNKNOWN)*ppvObject)->AddRef();
+		//	return S_OK;
+		//}
+		//return E_NOINTERFACE;
+		static const QITAB qit[] =
 		{
-			((LPUNKNOWN)*ppvObject)->AddRef();
-			return S_OK;
-		}
-		return E_NOINTERFACE;
+			QITABENT(CIDropTarget, IDropTarget),
+			{ 0 }
+		};
+
+		return QISearch(this, qit, riid, ppvObject);
+	}
+
+	ULONG STDMETHODCALLTYPE CIDropTarget::AddRef()
+	{
+		return InterlockedIncrement(&m_lRefCount);
 	}
 
 	ULONG STDMETHODCALLTYPE CIDropTarget::Release( void)
 	{
-		ATLTRACE("CIDropTarget::Release\n");
-		long nTemp;
-		nTemp = --m_cRefCount;
-		ATLASSERT(nTemp >= 0);
-		//if(nTemp==0) delete this;
-		return nTemp;
+		//ATLTRACE("CIDropTarget::Release\n");
+		ULONG lRef = InterlockedDecrement(&m_lRefCount);
+		if (0 == lRef)
+		{
+			delete this;
+		}
+		return m_lRefCount;
 	}
 
-	bool CIDropTarget::QueryDrop(DWORD grfKeyState, LPDWORD pdwEffect)
-	{  
-		ATLTRACE("CIDropTarget::QueryDrop\n");
-		DWORD dwOKEffects = *pdwEffect; 
+	//bool CIDropTarget::QueryDrop(DWORD grfKeyState, LPDWORD pdwEffect)
+	//{  
+	//	ATLTRACE("CIDropTarget::QueryDrop\n");
+	//	DWORD dwOKEffects = *pdwEffect; 
 
-		if(!m_bAllowDrop)
-		{
-			*pdwEffect = DROPEFFECT_NONE;
-			return false;
-		}
-		//CTRL+SHIFT  -- DROPEFFECT_LINK
-		//CTRL        -- DROPEFFECT_COPY
-		//SHIFT       -- DROPEFFECT_MOVE
-		//no modifier -- DROPEFFECT_MOVE or whatever is allowed by src
-		*pdwEffect = (grfKeyState & MK_CONTROL) ?
-			( (grfKeyState & MK_SHIFT) ? DROPEFFECT_LINK : DROPEFFECT_COPY ):
-			( (grfKeyState & MK_SHIFT) ? DROPEFFECT_MOVE : 0 );
-		if(*pdwEffect == 0) 
-		{
-			// No modifier keys used by user while dragging. 
-			if (DROPEFFECT_COPY & dwOKEffects)
-				*pdwEffect = DROPEFFECT_COPY;
-			else if (DROPEFFECT_MOVE & dwOKEffects)
-				*pdwEffect = DROPEFFECT_MOVE; 
-			else if (DROPEFFECT_LINK & dwOKEffects)
-				*pdwEffect = DROPEFFECT_LINK; 
-			else 
-			{
-				*pdwEffect = DROPEFFECT_NONE;
-			}
-		} 
-		else
-		{
-			// Check if the drag source application allows the drop effect desired by user.
-			// The drag source specifies this in DoDragDrop
-			if(!(*pdwEffect & dwOKEffects))
-				*pdwEffect = DROPEFFECT_NONE;
-		}  
-
-		return (DROPEFFECT_NONE == *pdwEffect)?false:true;
-	}   
+	//	if(!m_bAllowDrop)
+	//	{
+	//		*pdwEffect = DROPEFFECT_NONE;
+	//		return false;
+	//	}
+	//	//CTRL+SHIFT  -- DROPEFFECT_LINK
+	//	//CTRL        -- DROPEFFECT_COPY
+	//	//SHIFT       -- DROPEFFECT_MOVE
+	//	//no modifier -- DROPEFFECT_MOVE or whatever is allowed by src
+	//	*pdwEffect = (grfKeyState & MK_CONTROL) ?
+	//		( (grfKeyState & MK_SHIFT) ? DROPEFFECT_LINK : DROPEFFECT_COPY ):
+	//		( (grfKeyState & MK_SHIFT) ? DROPEFFECT_MOVE : 0 );
+	//	if(*pdwEffect == 0) 
+	//	{
+	//		// No modifier keys used by user while dragging. 
+	//		if (DROPEFFECT_COPY & dwOKEffects)
+	//			*pdwEffect = DROPEFFECT_COPY;
+	//		else if (DROPEFFECT_MOVE & dwOKEffects)
+	//			*pdwEffect = DROPEFFECT_MOVE; 
+	//		else if (DROPEFFECT_LINK & dwOKEffects)
+	//			*pdwEffect = DROPEFFECT_LINK; 
+	//		else 
+	//		{
+	//			*pdwEffect = DROPEFFECT_NONE;
+	//		}
+	//	} 
+	//	else
+	//	{
+	//		// Check if the drag source application allows the drop effect desired by user.
+	//		// The drag source specifies this in DoDragDrop
+	//		if(!(*pdwEffect & dwOKEffects))
+	//			*pdwEffect = DROPEFFECT_NONE;
+	//	}  
+	//	return (DROPEFFECT_NONE == *pdwEffect)?false:true;
+	//}   
 
 	HRESULT STDMETHODCALLTYPE CIDropTarget::DragEnter(
 		/* [unique][in] */ IDataObject __RPC_FAR *pDataObj,
@@ -518,54 +556,77 @@ namespace DuiLib {
 		/* [in] */ POINTL pt,
 		/* [out][in] */ DWORD __RPC_FAR *pdwEffect)
 	{
-		ATLTRACE("CIDropTarget::DragEnter\n");
+		//ATLTRACE("CIDropTarget::DragEnter\n");
 		if(pDataObj == NULL)
 			return E_INVALIDARG;
 
 		if(m_pDropTargetHelper)
-			m_pDropTargetHelper->DragEnter(m_hTargetWnd, pDataObj, (LPPOINT)&pt, *pdwEffect);
-		//IEnumFORMATETC* pEnum;
-		//pDataObj->EnumFormatEtc(DATADIR_GET,&pEnum);
-		//FORMATETC ftm;
-		//for()
-		//pEnum->Next(1,&ftm,0);
-		//pEnum->Release();
-		m_pSupportedFrmt = NULL;
-		for(int i =0; i<m_formatetc.size(); ++i)
 		{
-			m_bAllowDrop = (pDataObj->QueryGetData(&m_formatetc[i]) == S_OK)?true:false;
-			if(m_bAllowDrop)
-			{
-				m_pSupportedFrmt = &m_formatetc[i];
-				break;
-			}
+			m_pDropTargetHelper->DragEnter(m_hTargetWnd, pDataObj, (LPPOINT)&pt, *pdwEffect);
 		}
-
-		QueryDrop(grfKeyState, pdwEffect);
+		
+		if(m_pDuiDropTarget)
+		{
+			return m_pDuiDropTarget->OnDragEnter(pDataObj,grfKeyState,pt,pdwEffect);
+		}
+		
 		return S_OK;
 	}
+
+	//HRESULT CIDropTarget::OnDragEnter( IDataObject *pDataObj, DWORD grfKeyState, POINTL ptl,  DWORD *pdwEffect)
+	//{
+	//	//IEnumFORMATETC* pEnum;
+	//	//pDataObj->EnumFormatEtc(DATADIR_GET,&pEnum);
+	//	//FORMATETC ftm;
+	//	//for()
+	//	//pEnum->Next(1,&ftm,0);
+	//	//pEnum->Release();
+	//	m_pSupportedFrmt = NULL;
+	//	for(int i =0; i<m_formatetc.size(); ++i)
+	//	{
+	//		m_bAllowDrop = (pDataObj->QueryGetData(&m_formatetc[i]) == S_OK)?true:false;
+	//		if(m_bAllowDrop)
+	//		{
+	//			m_pSupportedFrmt = &m_formatetc[i];
+	//			break;
+	//		}
+	//	}
+
+	//	QueryDrop(grfKeyState, pdwEffect);
+	//	return S_OK;
+	//}
 
 	HRESULT STDMETHODCALLTYPE CIDropTarget::DragOver( 
 		/* [in] */ DWORD grfKeyState,
 		/* [in] */ POINTL pt,
 		/* [out][in] */ DWORD __RPC_FAR *pdwEffect)
 	{
-		ATLTRACE("CIDropTarget::DragOver\n");
+		//ATLTRACE("CIDropTarget::DragOver\n");
 		if(m_pDropTargetHelper)
+		{
 			m_pDropTargetHelper->DragOver((LPPOINT)&pt, *pdwEffect);
-		QueryDrop(grfKeyState, pdwEffect);
+		}
+		if(m_pDuiDropTarget)
+		{
+			return m_pDuiDropTarget->OnDragOver(grfKeyState,pt,pdwEffect);
+		}
 		return S_OK;
 	}
 
 	HRESULT STDMETHODCALLTYPE CIDropTarget::DragLeave( void)
 	{
-		ATLTRACE("CIDropTarget::DragLeave\n");
+		//ATLTRACE("CIDropTarget::DragLeave\n");
 
 		if(m_pDropTargetHelper)
+		{
 			m_pDropTargetHelper->DragLeave();
-
-		m_bAllowDrop = false;
-		m_pSupportedFrmt = NULL;
+		}
+		//m_bAllowDrop = false;
+		//m_pSupportedFrmt = NULL;
+		if(m_pDuiDropTarget)
+		{
+			return m_pDuiDropTarget->OnDragLeave();
+		}
 		return S_OK;
 	}
 
@@ -574,28 +635,33 @@ namespace DuiLib {
 		/* [in] */ DWORD grfKeyState, /* [in] */ POINTL pt, 
 		/* [out][in] */ DWORD __RPC_FAR *pdwEffect)
 	{
-		ATLTRACE("CIDropTarget::Drop\n");
+		//ATLTRACE("CIDropTarget::Drop\n");
 		if (pDataObj == NULL)
 			return E_INVALIDARG;	
 
 		if(m_pDropTargetHelper)
-			m_pDropTargetHelper->Drop(pDataObj, (LPPOINT)&pt, *pdwEffect);
-
-		if(QueryDrop(grfKeyState, pdwEffect))
 		{
-			if(m_bAllowDrop && m_pSupportedFrmt != NULL)
-			{
-				STGMEDIUM medium;
-				if(pDataObj->GetData(m_pSupportedFrmt, &medium) == S_OK)
-				{
-					if(OnDrop(m_pSupportedFrmt, medium, pdwEffect)) //does derive class wants us to free medium?
-						ReleaseStgMedium(&medium);
-				}
-			}
+			m_pDropTargetHelper->Drop(pDataObj, (LPPOINT)&pt, *pdwEffect);
 		}
-		m_bAllowDrop=false;
-		*pdwEffect = DROPEFFECT_NONE;
-		m_pSupportedFrmt = NULL;
+		if(m_pDuiDropTarget)
+		{
+			return m_pDuiDropTarget->OnDrop(pDataObj,grfKeyState,pt,pdwEffect);
+		}
+		//if(QueryDrop(grfKeyState, pdwEffect))
+		//{
+		//	if(m_bAllowDrop && m_pSupportedFrmt != NULL)
+		//	{
+		//		STGMEDIUM medium;
+		//		if(pDataObj->GetData(m_pSupportedFrmt, &medium) == S_OK)
+		//		{
+		//			if(OnDrop(m_pSupportedFrmt, medium, pdwEffect)) //does derive class wants us to free medium?
+		//				ReleaseStgMedium(&medium);
+		//		}
+		//	}
+		//}
+		//m_bAllowDrop=false;
+		//*pdwEffect = DROPEFFECT_NONE;
+		//m_pSupportedFrmt = NULL;
 		return S_OK;
 	}
 

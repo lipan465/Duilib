@@ -1416,4 +1416,55 @@ namespace DuiLib {
 		Invalidate();
 	}
 
+	// ´¦ÀíÍÏ×§
+	void  CControlUI::OnDragEnter( IDataObject *pDataObj, DWORD grfKeyState, POINT pt,  DWORD *pdwEffect)
+	{
+		if (IsDropEnabled())
+		{
+			*pdwEffect = DROPEFFECT_COPY;
+
+		}
+		else
+		{
+			*pdwEffect = DROPEFFECT_NONE;
+			if( m_pParent != NULL )m_pParent->OnDragEnter(pDataObj,grfKeyState,pt,pdwEffect);
+		}
+	}
+	void  CControlUI::OnDragOver(DWORD grfKeyState, POINT pt,DWORD *pdwEffect)
+	{
+		if (IsDropEnabled())
+		{
+			*pdwEffect = DROPEFFECT_COPY;
+
+		}
+		else
+		{
+			*pdwEffect = DROPEFFECT_NONE;
+			if( m_pParent != NULL )m_pParent->OnDragOver(grfKeyState,pt,pdwEffect);
+		}
+	}
+	void  CControlUI::OnDragLeave()
+	{
+		if (IsDropEnabled())
+		{
+
+		}
+		else
+		{
+			if( m_pParent != NULL )m_pParent->OnDragLeave();
+		}
+	}
+	void  CControlUI::OnDrop(IDataObject *pDataObj, DWORD grfKeyState, POINT pt, DWORD *pdwEffect)
+	{
+		if (IsDropEnabled())
+		{
+			*pdwEffect = DROPEFFECT_COPY;
+
+		}
+		else
+		{
+			*pdwEffect = DROPEFFECT_NONE;
+			if( m_pParent != NULL )m_pParent->OnDrop(pDataObj,grfKeyState,pt,pdwEffect);
+		}
+	}
 } // namespace DuiLib

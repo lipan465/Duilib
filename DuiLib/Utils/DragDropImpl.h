@@ -153,32 +153,46 @@ namespace DuiLib {
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
+
+	class IDuiDropTarget
+	{
+	public:
+		virtual	HRESULT  OnDragEnter( IDataObject *pDataObj, DWORD grfKeyState, POINTL ptl,  DWORD *pdwEffect) = 0;
+		virtual HRESULT  OnDragOver(DWORD grfKeyState, POINTL pt,DWORD *pdwEffect) = 0;
+		virtual HRESULT  OnDragLeave() = 0;
+		virtual HRESULT  OnDrop(IDataObject *pDataObj, DWORD grfKeyState, POINTL pt, DWORD *pdwEffect) = 0;
+	};
+
 	class UILIB_API CIDropTarget : public IDropTarget
 	{
-		DWORD m_cRefCount;
-		bool m_bAllowDrop;
+		volatile LONG  m_lRefCount;
+		//bool m_bAllowDrop;
 		struct IDropTargetHelper *m_pDropTargetHelper;
-		FormatEtcArray m_formatetc;
-		FORMATETC* m_pSupportedFrmt;
+		IDuiDropTarget* m_pDuiDropTarget;
+		//FormatEtcArray m_formatetc;
+		//FORMATETC* m_pSupportedFrmt;
 	protected:
 		HWND m_hTargetWnd;
 	public:
 
-		CIDropTarget(HWND m_hTargetWnd = NULL);
+		CIDropTarget();
 		virtual ~CIDropTarget();
-		void AddSuportedFormat(FORMATETC& ftetc) { m_formatetc.push_back(ftetc); }
-		void SetTargetWnd(HWND hWnd) { m_hTargetWnd = hWnd; }
-
+		//void AddSuportedFormat(FORMATETC& ftetc) { m_formatetc.push_back(ftetc); }
+		//void SetTargetWnd(HWND hWnd) { m_hTargetWnd = hWnd; }
+		//bool QueryDrop(DWORD grfKeyState, LPDWORD pdwEffect);
 		//return values: true - release the medium. false - don't release the medium 
-		virtual bool OnDrop(FORMATETC* pFmtEtc, STGMEDIUM& medium,DWORD *pdwEffect) = 0;
+		//virtual bool OnDrop(FORMATETC* pFmtEtc, STGMEDIUM& medium,DWORD *pdwEffect) = 0;
+
+		bool DragDropRegister(IDuiDropTarget* pDuiDropTarget,HWND hWnd);
+		bool DragDropRevoke();
 
 		virtual HRESULT STDMETHODCALLTYPE QueryInterface( 
 			/* [in] */ REFIID riid,
 			/* [iid_is][out] */ void __RPC_FAR *__RPC_FAR *ppvObject);
-		virtual ULONG STDMETHODCALLTYPE AddRef( void) { return ++m_cRefCount; }
+		virtual ULONG STDMETHODCALLTYPE AddRef( void);
 		virtual ULONG STDMETHODCALLTYPE Release( void);
 
-		bool QueryDrop(DWORD grfKeyState, LPDWORD pdwEffect);
+		
 		virtual HRESULT STDMETHODCALLTYPE DragEnter(
 			/* [unique][in] */ IDataObject __RPC_FAR *pDataObj,
 			/* [in] */ DWORD grfKeyState,

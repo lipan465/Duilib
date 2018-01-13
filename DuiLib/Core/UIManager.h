@@ -209,7 +209,7 @@ namespace DuiLib {
 	//
 	typedef CControlUI* (*LPCREATECONTROL)(LPCTSTR pstrType);
 
-	class UILIB_API CPaintManagerUI : public CIDropTarget
+	class UILIB_API CPaintManagerUI : public IDuiDropTarget
 	{
 	public:
 		CPaintManagerUI();
@@ -361,8 +361,12 @@ namespace DuiLib {
 		const TImageInfo* GetImageString(LPCTSTR pStrImage, LPCTSTR pStrModify = NULL);
 
 		// 初始化拖拽
-		bool InitDragDrop();
-		virtual bool OnDrop(FORMATETC* pFmtEtc, STGMEDIUM& medium,DWORD *pdwEffect);
+		//bool InitDragDrop();
+		//virtual bool OnDrop(FORMATETC* pFmtEtc, STGMEDIUM& medium,DWORD *pdwEffect);
+		virtual	HRESULT  OnDragEnter( IDataObject *pDataObj, DWORD grfKeyState, POINTL ptl,  DWORD *pdwEffect);
+		virtual HRESULT  OnDragOver(DWORD grfKeyState, POINTL pt,DWORD *pdwEffect);
+		virtual HRESULT  OnDragLeave();
+		virtual HRESULT  OnDrop(IDataObject *pDataObj, DWORD grfKeyState, POINTL pt, DWORD *pdwEffect);
 
 		bool AttachDialog(CControlUI* pControl);
 		bool InitControls(CControlUI* pControl, CControlUI* pParent = NULL);
@@ -465,8 +469,11 @@ namespace DuiLib {
 		BYTE* m_pOffscreenBits;
 		HBITMAP m_hbmpBackground;
 		COLORREF* m_pBackgroundBits;
-
 		CDPI* m_pDPI;
+		// 处理拖拽
+		CIDropTarget* m_pDropTarget;
+		CControlUI* m_pEventDrop;
+		IDataObject* m_pCurDataObject;
 
 		bool m_bShowUpdateRect;
 		// 是否开启Gdiplus

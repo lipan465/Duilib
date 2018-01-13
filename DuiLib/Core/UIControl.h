@@ -195,6 +195,11 @@ namespace DuiLib {
 		void SetVirtualWnd(LPCTSTR pstrValue);
 		CDuiString GetVirtualWnd() const;
 
+		// ´¦ÀíÍÏ×§
+		virtual	void  OnDragEnter( IDataObject *pDataObj, DWORD grfKeyState, POINT ptl,  DWORD *pdwEffect);
+		virtual void  OnDragOver(DWORD grfKeyState, POINT pt,DWORD *pdwEffect);
+		virtual void  OnDragLeave();
+		virtual void  OnDrop(IDataObject *pDataObj, DWORD grfKeyState, POINT pt, DWORD *pdwEffect);
 	public:
 		CEventSource OnInit;
 		CEventSource OnDestroy;
