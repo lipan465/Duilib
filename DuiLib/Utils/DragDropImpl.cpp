@@ -183,7 +183,7 @@ namespace DuiLib {
 			pMedDest->hEnhMetaFile = (HENHMETAFILE)OleDuplicateData(pMedSrc->hEnhMetaFile,pFmtSrc->cfFormat, NULL);
 			break;
 		case TYMED_FILE:
-			pMedSrc->lpszFileName = (LPOLESTR)OleDuplicateData(pMedSrc->lpszFileName,pFmtSrc->cfFormat, NULL);
+			pMedDest->lpszFileName = pMedSrc->lpszFileName;//(LPOLESTR)OleDuplicateData(pMedSrc->lpszFileName,pFmtSrc->cfFormat, NULL);
 			break;
 		case TYMED_ISTREAM:
 			pMedDest->pstm = pMedSrc->pstm;

@@ -1388,6 +1388,8 @@ namespace DuiLib {
 					DeleteDC(hdcMem);
 					medium.tymed = TYMED_ENHMF;
 					pdobj->SetData(&fmtetc, &medium, TRUE);
+					//////liyongpan
+					pControl->OnDragEnd(pdobj);
 					//////////////////////////////////////
 					CDragSourceHelper dragSrcHelper;
 					POINT ptDrag = {0};
@@ -1395,7 +1397,7 @@ namespace DuiLib {
 					ptDrag.y = bmap.bmHeight / 2;
 					dragSrcHelper.InitializeFromBitmap(hBitmap, ptDrag, rc, pdobj); //will own the bmp
 					DWORD dwEffect;
-					HRESULT hr = ::DoDragDrop(pdobj, pdsrc, DROPEFFECT_COPY | DROPEFFECT_MOVE, &dwEffect);
+					HRESULT hr = ::DoDragDrop(pdobj, pdsrc, DROPEFFECT_COPY | DROPEFFECT_MOVE | DROPEFFECT_LINK, &dwEffect);
 					pdsrc->Release();
 					pdobj->Release();
 					m_bDragMode = false;
@@ -1445,15 +1447,18 @@ namespace DuiLib {
 				if( pControl->GetManager() != this ) break;
 
 				// 准备拖拽
-				if(pControl->IsDragEnabled()) {
+				if(pControl->OnDragBegin(&m_hDragBitmap))
+				{
 					m_bDragMode = true;
-					if( m_hDragBitmap != NULL ) {
-						::DeleteObject(m_hDragBitmap);
-						m_hDragBitmap = NULL;
-					}
-					m_hDragBitmap = CRenderEngine::GenerateBitmap(this, pControl, pControl->GetPos());
 				}
-
+				//if(pControl->IsDragEnabled()) {
+				//	m_bDragMode = true;
+				//	if( m_hDragBitmap != NULL ) {
+				//		::DeleteObject(m_hDragBitmap);
+				//		m_hDragBitmap = NULL;
+				//	}
+				//	m_hDragBitmap = CRenderEngine::GenerateBitmap(this, pControl, pControl->GetPos());
+				//}
 				// 开启捕获
 				SetCapture();
 				// 事件处理

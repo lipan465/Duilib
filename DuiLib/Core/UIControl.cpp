@@ -1467,4 +1467,27 @@ namespace DuiLib {
 			if( m_pParent != NULL )m_pParent->OnDrop(pDataObj,grfKeyState,pt,pdwEffect);
 		}
 	}
+	bool CControlUI::OnDragBegin(HBITMAP* pDragBitmap)
+	{
+		if(IsDragEnabled()) 
+		{
+			//m_bDragMode = true;
+			if( *pDragBitmap != NULL ) {
+				::DeleteObject(*pDragBitmap);
+				*pDragBitmap = NULL;
+			}
+			*pDragBitmap = CRenderEngine::GenerateBitmap(GetManager(), this, GetPos());
+			return true;
+		}
+		else
+		{
+			if( m_pParent != NULL ) return m_pParent->OnDragBegin(pDragBitmap);
+		}
+		return false;
+	}
+	bool  CControlUI::OnDragEnd(CIDataObject* pdobj)
+	{
+		if( m_pParent != NULL ) return m_pParent->OnDragEnd(pdobj);
+		return false;
+	}
 } // namespace DuiLib

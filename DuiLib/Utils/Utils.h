@@ -99,7 +99,19 @@ namespace DuiLib
 		int m_nAllocated;
 	};
 
-
+	template<typename T>
+	class CDuiPtrArray : public CStdPtrArray
+	{
+	public:
+		T GetAt(int iIndex) const
+		{
+			return (T)CStdPtrArray::GetAt(iIndex);
+		}
+		T operator[] (int nIndex) const
+		{
+			return (T)CStdPtrArray::GetAt(nIndex);
+		}
+	};
 	/////////////////////////////////////////////////////////////////////////////////////
 	//
 
@@ -216,7 +228,7 @@ namespace DuiLib
 		}
 		vResults.push_back(text);
 		return vResults;
-}
+	}
 	/////////////////////////////////////////////////////////////////////////////////////
 	//
 

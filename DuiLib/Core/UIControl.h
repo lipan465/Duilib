@@ -200,6 +200,9 @@ namespace DuiLib {
 		virtual void  OnDragOver(DWORD grfKeyState, POINT pt,DWORD *pdwEffect);
 		virtual void  OnDragLeave();
 		virtual void  OnDrop(IDataObject *pDataObj, DWORD grfKeyState, POINT pt, DWORD *pdwEffect);
+
+		virtual bool  OnDragBegin(HBITMAP* pDragBitmap);
+		virtual bool  OnDragEnd(CIDataObject* pdobj);
 	public:
 		CEventSource OnInit;
 		CEventSource OnDestroy;
