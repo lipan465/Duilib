@@ -1306,6 +1306,20 @@ namespace DuiLib {
 		case WM_MOUSELEAVE:
 			{
 				if( m_hwndTooltip != NULL ) ::SendMessage(m_hwndTooltip, TTM_TRACKACTIVATE, FALSE, (LPARAM) &m_ToolTip);
+				if( m_pEventHover != NULL ) {
+					POINT pt = { 0 };
+					::GetCursorPos(&pt);
+					TEventUI event = { 0 };
+					event.Type = UIEVENT_MOUSELEAVE;
+					event.pSender = m_pEventHover;
+					event.wParam = wParam;
+					event.lParam = lParam;
+					event.dwTimestamp = ::GetTickCount();
+					event.ptMouse = pt;
+					event.wKeyState = MapKeyState();
+					m_pEventHover->Event(event);
+					m_pEventHover = NULL;
+				}
 				if( m_bMouseTracking ) {
 					POINT pt = { 0 };
 					RECT rcWnd = { 0 };
