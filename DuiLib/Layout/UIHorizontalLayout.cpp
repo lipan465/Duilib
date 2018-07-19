@@ -178,8 +178,11 @@ namespace DuiLib
 				}
 				RECT rcCtrl = { iPosX + rcPadding.left, iPosY + rcPadding.top, iPosX + sz.cx + rcPadding.left, iPosY + sz.cy + rcPadding.top };
 
-				CDuiRect rect = GetParent()->GetClientPos();
-				if( rcCtrl.right > rect.right ) rcCtrl.right = rect.right;
+				if(GetParent()!=NULL)
+				{
+					CDuiRect rect = GetParent()->GetClientPos();
+					if( rcCtrl.right > rect.right ) rcCtrl.right = rect.right;
+				}
 				pControl->SetPos(rcCtrl, false);
 			}
 
