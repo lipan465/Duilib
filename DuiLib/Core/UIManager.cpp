@@ -29,8 +29,8 @@ namespace DuiLib {
 	{
 		UINT uState = 0;
 		if( ::GetKeyState(VK_CONTROL) < 0 ) uState |= MK_CONTROL;
-		if( ::GetKeyState(VK_RBUTTON) < 0 ) uState |= MK_LBUTTON;
-		if( ::GetKeyState(VK_LBUTTON) < 0 ) uState |= MK_RBUTTON;
+		if( ::GetKeyState(VK_LBUTTON) < 0 ) uState |= MK_LBUTTON;
+		if( ::GetKeyState(VK_RBUTTON) < 0 ) uState |= MK_RBUTTON;
 		if( ::GetKeyState(VK_SHIFT) < 0 ) uState |= MK_SHIFT;
 		if( ::GetKeyState(VK_MENU) < 0 ) uState |= MK_ALT;
 		return uState;
@@ -462,8 +462,8 @@ namespace DuiLib {
 		if( m_bCachedResourceZip ) 
 		{
 #ifdef UNICODE
-			const char* pwd = U2A((wchar_t*)password);
-			m_hResourceZip = (HANDLE)OpenZip(pVoid, len, pwd);
+			string pwd = U2A((wchar_t*)password);
+			m_hResourceZip = (HANDLE)OpenZip(pVoid, len, pwd.c_str());
 #else
 			m_hResourceZip = (HANDLE)OpenZip(pVoid, len, password);
 #endif
@@ -484,8 +484,8 @@ namespace DuiLib {
 			CDuiString sFile = CPaintManagerUI::GetResourcePath();
 			sFile += CPaintManagerUI::GetResourceZip();
 #ifdef UNICODE
-			const char* pwd = U2A((wchar_t*)password);
-			m_hResourceZip = (HANDLE)OpenZip(sFile.GetData(), pwd);
+			string pwd = U2A((wchar_t*)password);
+			m_hResourceZip = (HANDLE)OpenZip(sFile.GetData(), pwd.c_str());
 #else
 			m_hResourceZip = (HANDLE)OpenZip(sFile.GetData(), password);
 #endif

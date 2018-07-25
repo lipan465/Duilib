@@ -319,8 +319,8 @@ namespace DuiLib {
 					else
 					{
 #ifdef UNICODE
-						const char* pwd = U2A((wchar_t*)sFilePwd.GetData());
-						hz = OpenZip(sFile.GetData(), pwd);
+						string pwd = U2A((wchar_t*)sFilePwd.GetData());
+						hz = OpenZip(sFile.GetData(), pwd.c_str());
 #else
 						hz = OpenZip(sFile.GetData(), sFilePwd.GetData());
 #endif
@@ -503,8 +503,8 @@ namespace DuiLib {
 					else {
 						CDuiString sFilePwd = CPaintManagerUI::GetResourceZipPwd();
 #ifdef UNICODE
-						char* pwd = w2a((wchar_t*)sFilePwd.GetData());
-						hz = OpenZip((void*)sFile.GetData(), pwd);
+						string pwd = w2a((wchar_t*)sFilePwd.GetData());
+						hz = OpenZip((void*)sFile.GetData(), pwd.c_str());
 						if(pwd) delete[] pwd;
 #else
 						hz = OpenZip((void*)sFile.GetData(), sFilePwd.GetData());
@@ -634,8 +634,8 @@ namespace DuiLib {
 				else {
 					CDuiString sFilePwd = CPaintManagerUI::GetResourceZipPwd();
 #ifdef UNICODE
-					const char* pwd = U2A((wchar_t*)sFilePwd.GetData());
-					hz = OpenZip(sFile.GetData(), pwd);
+					string pwd = U2A((wchar_t*)sFilePwd.GetData());
+					hz = OpenZip(sFile.GetData(), pwd.c_str());
 #else
 					hz = OpenZip(sFile.GetData(), sFilePwd.GetData());
 #endif
@@ -1575,7 +1575,8 @@ namespace DuiLib {
 		ASSERT(::GetObjectType(hDC)==OBJ_DC || ::GetObjectType(hDC)==OBJ_MEMDC);
 		if( pstrText == NULL || pManager == NULL ) return;
 
-		if ( pManager->IsLayered() || pManager->IsUseGdiplusText())
+		//if ( pManager->IsLayered() || pManager->IsUseGdiplusText())
+		if (pManager->IsUseGdiplusText())
 		{
 			HFONT hOldFont = (HFONT)::SelectObject(hDC, pManager->GetFont(iFont));
 			Gdiplus::Graphics graphics( hDC );
@@ -1642,9 +1643,7 @@ namespace DuiLib {
 			if ((uStyle & DT_CALCRECT) != 0)
 			{
 				Gdiplus::RectF bounds;
-
 				graphics.MeasureString(pstrText, -1, &font, rectF, &stringFormat, &bounds);
-
 				// MeasureString存在计算误差，这里加一像素
 				rc.bottom = rc.top + (long)bounds.Height + 1;
 				rc.right = rc.left + (long)bounds.Width + 1;

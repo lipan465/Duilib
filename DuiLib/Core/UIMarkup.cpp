@@ -368,8 +368,8 @@ bool CMarkup::LoadFromFile(LPCTSTR pstrFilename, int encoding)
         else {
 			CDuiString sFilePwd = CPaintManagerUI::GetResourceZipPwd();
 #ifdef UNICODE
-			const char* pwd = U2A((wchar_t*)sFilePwd.GetData());
-			hz = OpenZip(sFile.GetData(), pwd);
+			string pwd = U2A((wchar_t*)sFilePwd.GetData());
+			hz = OpenZip(sFile.GetData(), pwd.c_str());
 #else
             hz = OpenZip(sFile.GetData(), sFilePwd.GetData());
 #endif
