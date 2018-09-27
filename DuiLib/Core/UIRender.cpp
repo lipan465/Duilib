@@ -1575,8 +1575,8 @@ namespace DuiLib {
 		ASSERT(::GetObjectType(hDC)==OBJ_DC || ::GetObjectType(hDC)==OBJ_MEMDC);
 		if( pstrText == NULL || pManager == NULL ) return;
 
-		//if ( pManager->IsLayered() || pManager->IsUseGdiplusText())
-		if (pManager->IsUseGdiplusText())
+		if ( pManager->IsLayered() || pManager->IsUseGdiplusText())
+		//if (pManager->IsUseGdiplusText())
 		{
 			HFONT hOldFont = (HFONT)::SelectObject(hDC, pManager->GetFont(iFont));
 			Gdiplus::Graphics graphics( hDC );
@@ -1643,7 +1643,8 @@ namespace DuiLib {
 			if ((uStyle & DT_CALCRECT) != 0)
 			{
 				Gdiplus::RectF bounds;
-				graphics.MeasureString(pstrText, -1, &font, rectF, &stringFormat, &bounds);
+				Gdiplus::PointF origin(0.0f, 0.0f);
+				graphics.MeasureString(pstrText, -1, &font, origin, &stringFormat, &bounds);
 				// MeasureString存在计算误差，这里加一像素
 				rc.bottom = rc.top + (long)bounds.Height + 1;
 				rc.right = rc.left + (long)bounds.Width + 1;
@@ -1662,7 +1663,8 @@ namespace DuiLib {
 				if ((uStyle & DT_CALCRECT) != 0)
 				{
 					Gdiplus::RectF bounds;
-					graphics.MeasureString(pcwszDest, -1, &font, rectF, &stringFormat, &bounds);
+					Gdiplus::PointF origin(0.0f, 0.0f);
+					graphics.MeasureString(pcwszDest, -1, &font, origin, &stringFormat, &bounds);
 					rc.bottom = rc.top + (long)(bounds.Height * 1.06);
 					rc.right = rc.left + (long)(bounds.Width * 1.06);
 				}
