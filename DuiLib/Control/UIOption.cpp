@@ -86,7 +86,7 @@ namespace DuiLib
 				}
 			}
 			else {
-				m_pManager->SendNotify(this, DUI_MSGTYPE_SELECTCHANGED);
+				if(bNotify) m_pManager->SendNotify(this, DUI_MSGTYPE_SELECTCHANGED);
 			}
 		}
 

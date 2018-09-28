@@ -1204,9 +1204,9 @@ void CRichEditUI::SetFont(LPCTSTR pStrFontName, int nSize, bool bBold, bool bUnd
 void CRichEditUI::SetEnabled(bool bEnabled)
 {
 	if (m_bEnabled == bEnabled) return;
-
+	
 	if( m_pTwh ) {
-		m_pTwh->SetColor(bEnabled ? m_dwTextColor : GetManager()->GetDefaultDisabledColor());
+		m_pTwh->SetColor(bEnabled ? m_dwTextColor : m_dwDisableTextColor);
 	}
 	
 	CContainerUI::SetEnabled(bEnabled);
@@ -1225,6 +1225,14 @@ void CRichEditUI::SetWinStyle(LONG lStyle)
 DWORD CRichEditUI::GetTextColor()
 {
     return m_dwTextColor;
+}
+
+void CRichEditUI::SetDisableTextColor(DWORD dwTextColor)
+{
+	m_dwDisableTextColor = dwTextColor;
+	if( m_pTwh ) {
+		m_pTwh->SetColor(m_dwDisableTextColor);
+	}
 }
 
 void CRichEditUI::SetTextColor(DWORD dwTextColor)
@@ -1736,7 +1744,7 @@ void CRichEditUI::DoInit()
 			m_pTwh->SetColor(GetManager()->GetDefaultDisabledColor());
 		}
     }
-	
+	m_dwDisableTextColor = GetManager()->GetDefaultDisabledColor();
 	m_bInited= true;
 }
 

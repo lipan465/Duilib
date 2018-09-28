@@ -633,6 +633,7 @@ namespace DuiLib
 
 	CDuiString CDuiString::Left(int iLength) const
 	{
+		if( iLength == 0 ) return _T("");
 		if( iLength < 0 ) iLength = 0;
 		if( iLength > GetLength() ) iLength = GetLength();
 		return CDuiString(m_pstr, iLength);

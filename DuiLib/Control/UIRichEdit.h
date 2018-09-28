@@ -42,6 +42,7 @@ namespace DuiLib {
 		void SetWinStyle(LONG lStyle);
 		DWORD GetTextColor();
 		void SetTextColor(DWORD dwTextColor);
+		void SetDisableTextColor(DWORD dwTextColor);
 		int GetLimitText();
 		void SetLimitText(int iChars);
 		long GetTextLength(DWORD dwFlags = GTL_DEFAULT) const;
@@ -164,6 +165,7 @@ namespace DuiLib {
 		bool m_bReadOnly;
 		bool m_bWordWrap;
 		DWORD m_dwTextColor;
+		DWORD m_dwDisableTextColor;
 		int m_iFont;
 		int m_iLimitText;
 		LONG m_lTwhStyle;
