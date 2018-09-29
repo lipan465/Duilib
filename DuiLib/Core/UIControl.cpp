@@ -1161,6 +1161,11 @@ namespace DuiLib {
 				//	sItem += *pstrList++;
 				//}
 			//}
+			for (;*pstrList != _T('\0'); )
+			{
+				if ((*pstrList >= 'a' && *pstrList <= 'z') || (*pstrList >= 'A' && *pstrList <= 'Z') || (*pstrList >= '0' && *pstrList <= '9')) break;
+				else pstrList++;
+			}
 			for(LPCTSTR p=pstrList;*p != _T('\0');p++)
 			{
 				if(*p == _T('='))
