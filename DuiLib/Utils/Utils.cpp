@@ -979,9 +979,44 @@ namespace DuiLib
 		::SetCursor(m_hOrigCursor);
 	}
 
-	std::string w2a(const wchar_t* lpszSrc)
+	dui_string::dui_string()
 	{
-		std::string str;
+		_data = 0;
+	}
+	dui_string::dui_string(const dui_string& src)
+	{
+		_len = src._len;
+		_data = malloc(_len);
+		memcpy(_data,src._data,_len);
+	}
+	dui_string::~dui_string()
+	{
+		if(_data) free(_data);
+	}
+	void dui_string::Assign(const wchar_t* lpszSrc)
+	{
+		_len =  (wcslen(lpszSrc) + 1)*sizeof(wchar_t);
+		_data = malloc(_len);
+		wcscpy((wchar_t*)_data,lpszSrc);
+	}
+	void dui_string::Assign(const char* lpszSrc)
+	{
+		_len =  (strlen(lpszSrc) + 1)*sizeof(char);
+		_data = malloc(_len);
+		strcpy((char*)_data,lpszSrc);
+	}
+	const char* dui_string::c_strA()
+	{
+		return (const char*)_data;
+	}
+	const wchar_t* dui_string::c_strW()
+	{
+		return (const wchar_t*)_data;
+	}
+
+	dui_string w2a(const wchar_t* lpszSrc)
+	{
+		dui_string str;
 		if (lpszSrc != NULL)
 		{
 			int  nANSILen = WideCharToMultiByte(CP_ACP, 0, lpszSrc, -1, NULL, 0, NULL, NULL);
@@ -990,16 +1025,16 @@ namespace DuiLib
 			{
 				ZeroMemory(pANSI, nANSILen + 1);
 				WideCharToMultiByte(CP_ACP, 0, lpszSrc, -1, pANSI, nANSILen, NULL, NULL);
-				str = pANSI;
+				str.Assign(pANSI);
 				delete[] pANSI;
 			}
-		}	
+		}
 		return str;
 	}
 
-	std::wstring a2w(const char* lpszSrc)
+	dui_string a2w(const char* lpszSrc)
 	{
-		std::wstring str;
+		dui_string str;
 		if (lpszSrc != NULL)
 		{
 			int nUnicodeLen = MultiByteToWideChar(CP_ACP, 0, lpszSrc, -1, NULL, 0);
@@ -1008,7 +1043,7 @@ namespace DuiLib
 			{
 				ZeroMemory((void*)pUnicode, (nUnicodeLen + 1) * sizeof(WCHAR));
 				MultiByteToWideChar(CP_ACP, 0, lpszSrc,-1, pUnicode, nUnicodeLen);
-				str = pUnicode;
+				str.Assign(pUnicode);
 				delete[] pUnicode;
 			}
 		}
