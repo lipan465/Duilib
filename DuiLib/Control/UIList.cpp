@@ -2414,7 +2414,14 @@ namespace DuiLib {
 
 		if ( pText ) {delete pText; pText = NULL;}
 		m_aTexts.SetAt(iIndex, new CDuiString(pstrText));
-		m_aBkColors.SetAt(iIndex,(LPVOID)pInfo->dwBkColor);
+		if( !pInfo->bAlternateBk || m_iIndex % 2 == 1 )
+		{
+			m_aBkColors.SetAt(iIndex,(LPVOID)pInfo->dwBkColor);
+		}
+		else
+		{
+			m_aBkColors.SetAt(iIndex,(LPVOID)0);
+		}
 
 		Invalidate();
 	}
